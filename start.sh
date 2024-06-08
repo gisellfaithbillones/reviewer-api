@@ -37,7 +37,7 @@ docker compose up -d
 # Wait for the containers to initialize
 echo -e "\033[0m \033[1;35m Waiting for the containers to initialize \033[0m"
 
-while ! docker exec laravel-db mysql -uroot -p$DB_ROOT_PASSWORD -e "SELECT 1" >/dev/null 2>&1; do
+while ! docker exec reviewer-db mysql -uroot -p$DB_ROOT_PASSWORD -e "SELECT 1" >/dev/null 2>&1; do
     sleep 1
 done
 
@@ -60,7 +60,7 @@ else
     "
 fi
 
-docker exec -it laravel-api bash -c "$COMMANDS"
+docker exec -it reviewer-api bash -c "$COMMANDS"
 
 echo -e "\033[0m \033[1;35m Application is running at: \033[0m"
 echo -e "\033[0m \033[1;32m \t http://localhost:8000/ \033[0m"

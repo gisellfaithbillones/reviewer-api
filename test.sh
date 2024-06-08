@@ -17,4 +17,4 @@ php artisan passport:keys --env=testing
 php artisan test --parallel $FILTER
 "
 
-docker exec -it laravel-api bash -c "$COMMANDS"
+docker exec -it reviewer-api bash -c "$COMMANDS"
