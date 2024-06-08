@@ -15,8 +15,8 @@ class SignUpUserRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'firstName' => 'required|string',
-            'lastName' => 'required|string',
+//            'firstName' => 'required|string',
+//            'lastName' => 'required|string',
             'email' => 'required|email',
             'phoneNumber' => 'required|string',
             'password' => 'required|string|min:8',
@@ -42,8 +42,8 @@ class SignUpUserRequest extends BaseRequest
     public function toData(): SignUpUserData
     {
         return new SignUpUserData(
-            firstName: $this->getInputAsString('firstName'),
-            lastName: $this->getInputAsString('lastName'),
+            firstName: $this->getInputAsString('firstName', ''),
+            lastName: $this->getInputAsString('lastName', ''),
             email: $this->getInputAsString('email'),
             phoneNumber: $this->getInputAsString('phoneNumber'),
             rawPassword: $this->getInputAsString('password'),
