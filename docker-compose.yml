@@ -1,7 +1,7 @@
 services:
-  laravel-api:
+  reviewer-api:
     image: jaylordibe/laravel-php
-    container_name: laravel-api
+    container_name: reviewer-api
     restart: unless-stopped
     tty: true
     platform: linux/x86_64
@@ -11,10 +11,10 @@ services:
       - .:/var/www/html
     working_dir: /var/www/html
     networks:
-      - laravel-network
-  laravel-db:
+      - reviewer-network
+  reviewer-db:
     image: mysql:8.0.25
-    container_name: laravel-db
+    container_name: reviewer-db
     restart: unless-stopped
     tty: true
     platform: linux/x86_64
@@ -28,23 +28,23 @@ services:
     volumes:
       - ./docker/database/data:/var/lib/mysql
     networks:
-      - laravel-network
-  laravel-db-gui-admin:
+      - reviewer-network
+  reviewer-db-gui-admin:
     image: phpmyadmin/phpmyadmin
-    container_name: laravel-db-gui-admin
+    container_name: reviewer-db-gui-admin
     restart: unless-stopped
     tty: true
     platform: linux/x86_64
     ports:
       - "8091:80"
     environment:
-      PMA_HOST: laravel-db
+      PMA_HOST: reviewer-db
       UPLOAD_LIMIT: 300M
     networks:
-      - laravel-network
-  laravel-db-test:
+      - reviewer-network
+  reviewer-db-test:
     image: mysql:8.0.25
-    container_name: laravel-db-test
+    container_name: reviewer-db-test
     restart: unless-stopped
     tty: true
     platform: linux/x86_64
@@ -58,20 +58,20 @@ services:
     volumes:
       - ./docker/database/test-data:/var/lib/mysql
     networks:
-      - laravel-network
-  laravel-db-test-gui-admin:
+      - reviewer-network
+  reviewer-db-test-gui-admin:
     image: phpmyadmin/phpmyadmin
-    container_name: laravel-db-test-gui-admin
+    container_name: reviewer-db-test-gui-admin
     restart: unless-stopped
     tty: true
     platform: linux/x86_64
     ports:
       - "8092:80"
     environment:
-      PMA_HOST: laravel-db-test
+      PMA_HOST: reviewer-db-test
       UPLOAD_LIMIT: 300M
     networks:
-      - laravel-network
+      - reviewer-network
 networks:
-  laravel-network:
+  reviewer-network:
     driver: bridge
