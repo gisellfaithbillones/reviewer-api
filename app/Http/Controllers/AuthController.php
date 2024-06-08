@@ -37,9 +37,9 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        if (empty($user->email_verified_at)) {
-            return ResponseUtil::error('Email not yet verified. Please check your email and verify.');
-        }
+//        if (empty($user->email_verified_at)) {
+//            return ResponseUtil::error('Email not yet verified. Please check your email and verify.');
+//        }
 
         $response = [
             'token' => $user->createToken(config('app.name'))->accessToken
