@@ -1,0 +1,77 @@
+services:
+  laravel-api:
+    image: jaylordibe/laravel-php
+    container_name: laravel-api
+    restart: unless-stopped
+    tty: true
+    platform: linux/x86_64
+    ports:
+      - "9000:80"
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    networks:
+      - laravel-network
+  laravel-db:
+    image: mysql:8.0.25
+    container_name: laravel-db
+    restart: unless-stopped
+    tty: true
+    platform: linux/x86_64
+    ports:
+      - "4406:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./docker/database/data:/var/lib/mysql
+    networks:
+      - laravel-network
+  laravel-db-gui-admin:
+    image: phpmyadmin/phpmyadmin
+    container_name: laravel-db-gui-admin
+    restart: unless-stopped
+    tty: true
+    platform: linux/x86_64
+    ports:
+      - "9001:80"
+    environment:
+      PMA_HOST: laravel-db
+      UPLOAD_LIMIT: 300M
+    networks:
+      - laravel-network
+  laravel-db-test:
+    image: mysql:8.0.25
+    container_name: laravel-db-test
+    restart: unless-stopped
+    tty: true
+    platform: linux/x86_64
+    ports:
+      - "4407:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${TEST_DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${TEST_DB_DATABASE}
+      MYSQL_USER: ${TEST_DB_USERNAME}
+      MYSQL_PASSWORD: ${TEST_DB_PASSWORD}
+    volumes:
+      - ./docker/database/test-data:/var/lib/mysql
+    networks:
+      - laravel-network
+  laravel-db-test-gui-admin:
+    image: phpmyadmin/phpmyadmin
+    container_name: laravel-db-test-gui-admin
+    restart: unless-stopped
+    tty: true
+    platform: linux/x86_64
+    ports:
+      - "9002:80"
+    environment:
+      PMA_HOST: laravel-db-test
+      UPLOAD_LIMIT: 300M
+    networks:
+      - laravel-network
+networks:
+  laravel-network:
+    driver: bridge
