@@ -20,7 +20,10 @@ class QuestionResource extends JsonResource
         return [
             'id' => $this->id,
             'createdAt' => $this->created_at,
-            'updatedAt' => $this->updated_at
+            'updatedAt' => $this->updated_at,
+            'content' => $this->content,
+            'choices' => ChoiceResource::collection($this->whenLoaded('choices')),
+            'answer' => new AnswerResource($this->whenLoaded('answer'))
         ];
     }
 

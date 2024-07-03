@@ -18,7 +18,7 @@ class QuestionFeatureTest extends TestCase
     private function getPayload(): array
     {
         return [
-            // Add the request payload here
+            'content' => 'What is ' . fake()->sentence() . '?'
         ];
     }
 

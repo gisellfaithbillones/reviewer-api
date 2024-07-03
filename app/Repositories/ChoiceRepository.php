@@ -24,6 +24,8 @@ class ChoiceRepository
     public function save(ChoiceData $choiceData, ?Choice $choice = null): ?Choice
     {
         $choice ??= new Choice();
+        $choice->question_id = $choiceData->questionId;
+        $choice->content = $choiceData->content;
         $choice->save();
 
         return $this->findById($choice->id);
@@ -71,6 +73,10 @@ class ChoiceRepository
             });
         }
 
+        if (!empty($choiceFilterData->questionId)) {
+            $choices->where('question_id', $choiceFilterData->questionId);
+        }
+
         return $choices->orderBy(
             $choiceFilterData->meta->sortField,
             $choiceFilterData->meta->sortDirection
@@ -96,6 +102,7 @@ class ChoiceRepository
             return (bool) $choice->delete();
         } catch (Exception $e) {
             Log::error("Delete Choice Exception: {$e->getMessage()}");
+
             return false;
         }
     }

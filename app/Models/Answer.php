@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use App\Constants\DatabaseTableConstant;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property ...
+ * @property int $question_id
+ * @property string $content
  *
  * Model relationships
- * @property ...
+ * @property Question|null $question
  */
 class Answer extends BaseModel
 {
@@ -36,5 +38,15 @@ class Answer extends BaseModel
      * @var array
      */
     protected $casts = [];
+
+    /**
+     * The question of this choice.
+     *
+     * @return BelongsTo
+     */
+    public function question(): BelongsTo
+    {
+        return $this->belongsTo(Question::class);
+    }
 
 }

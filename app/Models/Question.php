@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use App\Constants\DatabaseTableConstant;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property ...
+ * @property string $content
  *
  * Model relationships
- * @property ...
+ * @property Choice[]|Collection $choices
+ * @property Answer|null $answer
  */
 class Question extends BaseModel
 {
@@ -36,5 +40,25 @@ class Question extends BaseModel
      * @var array
      */
     protected $casts = [];
+
+    /**
+     * The choices of this question.
+     *
+     * @return HasMany
+     */
+    public function choices(): HasMany
+    {
+        return $this->hasMany(Choice::class);
+    }
+
+    /**
+     * The answer of this question.
+     *
+     * @return HasOne
+     */
+    public function answer(): HasOne
+    {
+        return $this->hasOne(Answer::class);
+    }
 
 }

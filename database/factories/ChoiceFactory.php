@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Choice;
+use App\Models\Question;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,8 @@ class ChoiceFactory extends Factory
     public function definition(): array
     {
         return [
-            // Add the model properties here
+            'question_id' => Question::factory()->create()->id,
+            'content' => fake()->sentence()
         ];
     }
 

@@ -15,7 +15,9 @@ class QuestionRequest extends BaseRequest
      */
     public function rules(): array
     {
-        return [];
+        return [
+            'content' => 'required|string'
+        ];
     }
 
     /**
@@ -36,7 +38,7 @@ class QuestionRequest extends BaseRequest
     public function toData(): QuestionData
     {
         return new QuestionData(
-            // Add QuestionData properties here
+            content: $this->getInputAsString('content'),
             id: $this->route('questionId'),
             authUser: $this->getAuthUserData(),
             meta: $this->getMetaData()
@@ -51,7 +53,7 @@ class QuestionRequest extends BaseRequest
     public function toFilterData(): QuestionFilterData
     {
         return new QuestionFilterData(
-            // Add QuestionFilterData properties here
+            content: $this->getInputAsString('content'),
             id: $this->getInputAsInt('id'),
             authUser: $this->getAuthUserData(),
             meta: $this->getMetaData()

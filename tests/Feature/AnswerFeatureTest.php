@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Answer;
+use App\Models\Question;
 use Tests\TestCase;
 
 class AnswerFeatureTest extends TestCase
@@ -18,7 +19,8 @@ class AnswerFeatureTest extends TestCase
     private function getPayload(): array
     {
         return [
-            // Add the request payload here
+            'questionId' => Question::factory()->create()->id,
+            'content' => fake()->sentence()
         ];
     }
 

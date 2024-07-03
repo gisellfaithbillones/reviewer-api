@@ -6,7 +6,8 @@ class ChoiceData extends BaseData
 {
 
     public function __construct(
-        // Add ChoiceData properties here
+        public int $questionId,
+        public string $content,
         ...$args
     )
     {

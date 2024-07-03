@@ -24,6 +24,8 @@ class CreateAnswersTable extends Migration
             $table->foreignId('created_by')->nullable()->constrained(DatabaseTableConstant::USERS);
             $table->foreignId('updated_by')->nullable()->constrained(DatabaseTableConstant::USERS);
             $table->foreignId('deleted_by')->nullable()->constrained(DatabaseTableConstant::USERS);
+            $table->foreignId('question_id')->constrained(DatabaseTableConstant::QUESTIONS);
+            $table->text('content');
         });
     }
 

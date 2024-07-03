@@ -20,7 +20,10 @@ class ChoiceResource extends JsonResource
         return [
             'id' => $this->id,
             'createdAt' => $this->created_at,
-            'updatedAt' => $this->updated_at
+            'updatedAt' => $this->updated_at,
+            'questionId' => $this->question_id,
+            'question' => new QuestionResource($this->whenLoaded('question')),
+            'content' => $this->content
         ];
     }
 

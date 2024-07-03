@@ -24,6 +24,8 @@ class AnswerRepository
     public function save(AnswerData $answerData, ?Answer $answer = null): ?Answer
     {
         $answer ??= new Answer();
+        $answer->question_id = $answerData->questionId;
+        $answer->content = $answerData->content;
         $answer->save();
 
         return $this->findById($answer->id);
@@ -71,6 +73,10 @@ class AnswerRepository
             });
         }
 
+        if (!empty($answerFilterData->questionId)) {
+            $answers->where('question_id', $answerFilterData->questionId);
+        }
+
         return $answers->orderBy(
             $answerFilterData->meta->sortField,
             $answerFilterData->meta->sortDirection
@@ -96,6 +102,7 @@ class AnswerRepository
             return (bool) $answer->delete();
         } catch (Exception $e) {
             Log::error("Delete Answer Exception: {$e->getMessage()}");
+
             return false;
         }
     }

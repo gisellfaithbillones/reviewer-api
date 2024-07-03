@@ -6,7 +6,8 @@ class AnswerFilterData extends BaseData
 {
 
     public function __construct(
-        // Add AnswerFilterData properties here
+        public ?int $questionId = null,
+        public ?string $content = null,
         ...$args
     )
     {

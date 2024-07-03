@@ -6,7 +6,8 @@ class AnswerData extends BaseData
 {
 
     public function __construct(
-        // Add AnswerData properties here
+        public int $questionId,
+        public string $content,
         ...$args
     )
     {

@@ -19,7 +19,7 @@ class QuestionFactory extends Factory
     public function definition(): array
     {
         return [
-            // Add the model properties here
+            'content' => 'What is ' . fake()->sentence() . '?'
         ];
     }
 

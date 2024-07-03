@@ -24,6 +24,7 @@ class QuestionRepository
     public function save(QuestionData $questionData, ?Question $question = null): ?Question
     {
         $question ??= new Question();
+        $question->content = $questionData->content;
         $question->save();
 
         return $this->findById($question->id);
@@ -96,6 +97,7 @@ class QuestionRepository
             return (bool) $question->delete();
         } catch (Exception $e) {
             Log::error("Delete Question Exception: {$e->getMessage()}");
+
             return false;
         }
     }

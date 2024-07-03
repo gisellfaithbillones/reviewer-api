@@ -15,7 +15,10 @@ class ChoiceRequest extends BaseRequest
      */
     public function rules(): array
     {
-        return [];
+        return [
+            'questionId' => 'required|integer',
+            'content' => 'required|string'
+        ];
     }
 
     /**
@@ -36,7 +39,8 @@ class ChoiceRequest extends BaseRequest
     public function toData(): ChoiceData
     {
         return new ChoiceData(
-            // Add ChoiceData properties here
+            questionId: $this->getInputAsInt('questionId'),
+            content: $this->getInputAsString('content'),
             id: $this->route('choiceId'),
             authUser: $this->getAuthUserData(),
             meta: $this->getMetaData()
@@ -51,7 +55,8 @@ class ChoiceRequest extends BaseRequest
     public function toFilterData(): ChoiceFilterData
     {
         return new ChoiceFilterData(
-            // Add ChoiceFilterData properties here
+            questionId: $this->getInputAsInt('questionId'),
+            content: $this->getInputAsString('content'),
             id: $this->getInputAsInt('id'),
             authUser: $this->getAuthUserData(),
             meta: $this->getMetaData()

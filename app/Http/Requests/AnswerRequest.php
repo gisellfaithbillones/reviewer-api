@@ -15,7 +15,10 @@ class AnswerRequest extends BaseRequest
      */
     public function rules(): array
     {
-        return [];
+        return [
+            'questionId' => 'required|integer',
+            'content' => 'required|string'
+        ];
     }
 
     /**
@@ -36,7 +39,8 @@ class AnswerRequest extends BaseRequest
     public function toData(): AnswerData
     {
         return new AnswerData(
-            // Add AnswerData properties here
+            questionId: $this->getInputAsInt('questionId'),
+            content: $this->getInputAsString('content'),
             id: $this->route('answerId'),
             authUser: $this->getAuthUserData(),
             meta: $this->getMetaData()
@@ -51,7 +55,8 @@ class AnswerRequest extends BaseRequest
     public function toFilterData(): AnswerFilterData
     {
         return new AnswerFilterData(
-            // Add AnswerFilterData properties here
+            questionId: $this->getInputAsInt('questionId'),
+            content: $this->getInputAsString('content'),
             id: $this->getInputAsInt('id'),
             authUser: $this->getAuthUserData(),
             meta: $this->getMetaData()

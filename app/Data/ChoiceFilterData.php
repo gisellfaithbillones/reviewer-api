@@ -6,7 +6,8 @@ class ChoiceFilterData extends BaseData
 {
 
     public function __construct(
-        // Add ChoiceFilterData properties here
+        public ?int $questionId = null,
+        public ?string $content = null,
         ...$args
     )
     {
