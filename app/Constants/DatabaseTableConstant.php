@@ -11,5 +11,8 @@ class DatabaseTableConstant
     const FAILED_JOBS = 'failed_jobs';
     const PERSONAL_ACCESS_TOKENS = 'personal_access_tokens';
     const ADDRESSES = 'addresses';
+	const QUESTIONS = 'questions';
+	const CHOICES = 'choices';
+	const ANSWERS = 'answers';
 
 }

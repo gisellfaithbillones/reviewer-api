@@ -6,6 +6,9 @@ use App\Http\Controllers\AppVersionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\ChoiceController;
+use App\Http\Controllers\AnswerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,4 +60,31 @@ Route::middleware('auth:api')->group(function () {
         Route::put('/{addressId}', [AddressController::class, 'update'])->where('addressId', RoutePatternConstant::NUMERIC);
         Route::delete('/{addressId}', [AddressController::class, 'delete'])->where('addressId', RoutePatternConstant::NUMERIC);
     });
+
+	// CRUD routes for Question
+	Route::prefix('questions')->group(function () {
+    	Route::post('/', [QuestionController::class, 'create']);
+    	Route::get('/', [QuestionController::class, 'getPaginated']);
+    	Route::get('/{questionId}', [QuestionController::class, 'getById'])->where('questionId', RoutePatternConstant::NUMERIC);
+    	Route::put('/{questionId}', [QuestionController::class, 'update'])->where('questionId', RoutePatternConstant::NUMERIC);
+    	Route::delete('/{questionId}', [QuestionController::class, 'delete'])->where('questionId', RoutePatternConstant::NUMERIC);
+	});
+
+	// CRUD routes for Choice
+	Route::prefix('choices')->group(function () {
+    	Route::post('/', [ChoiceController::class, 'create']);
+    	Route::get('/', [ChoiceController::class, 'getPaginated']);
+    	Route::get('/{choiceId}', [ChoiceController::class, 'getById'])->where('choiceId', RoutePatternConstant::NUMERIC);
+    	Route::put('/{choiceId}', [ChoiceController::class, 'update'])->where('choiceId', RoutePatternConstant::NUMERIC);
+    	Route::delete('/{choiceId}', [ChoiceController::class, 'delete'])->where('choiceId', RoutePatternConstant::NUMERIC);
+	});
+
+	// CRUD routes for Answer
+	Route::prefix('answers')->group(function () {
+    	Route::post('/', [AnswerController::class, 'create']);
+    	Route::get('/', [AnswerController::class, 'getPaginated']);
+    	Route::get('/{answerId}', [AnswerController::class, 'getById'])->where('answerId', RoutePatternConstant::NUMERIC);
+    	Route::put('/{answerId}', [AnswerController::class, 'update'])->where('answerId', RoutePatternConstant::NUMERIC);
+    	Route::delete('/{answerId}', [AnswerController::class, 'delete'])->where('answerId', RoutePatternConstant::NUMERIC);
+	});
 });
