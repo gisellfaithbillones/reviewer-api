@@ -14,5 +14,7 @@ class DatabaseTableConstant
 	const QUESTIONS = 'questions';
 	const CHOICES = 'choices';
 	const ANSWERS = 'answers';
+	const REVIEWERS = 'reviewers';
+	const NOTES = 'notes';
 
 }

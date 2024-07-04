@@ -2,17 +2,17 @@
 
 namespace Tests\Feature;
 
-use App\Models\Question;
+use App\Models\Note;
 use App\Models\Reviewer;
 use Tests\TestCase;
 
-class QuestionFeatureTest extends TestCase
+class NoteFeatureTest extends TestCase
 {
 
-    private string $resource = '/api/questions';
+    private string $resource = '/api/notes';
 
     /**
-     * Get question payload.
+     * Get note payload.
      *
      * @return array
      */
@@ -20,18 +20,19 @@ class QuestionFeatureTest extends TestCase
     {
         return [
             'reviewerId' => Reviewer::factory()->create()->id,
-            'content' => 'What is ' . fake()->sentence() . '?'
+            'title' => fake()->sentence(),
+            'content' => fake()->paragraph()
         ];
     }
 
     /**
      * @test
      *
-     * A basic unit test in creating question.
+     * A basic unit test in creating note.
      *
      * @return void
      */
-    public function testCreateQuestion(): void
+    public function testCreateNote(): void
     {
         $token = $this->loginSystemAdminUser();
         $payload = $this->getPayload();
@@ -43,14 +44,14 @@ class QuestionFeatureTest extends TestCase
     /**
      * @test
      *
-     * A basic unit test in getting paginated questions.
+     * A basic unit test in getting paginated notes.
      *
      * @return void
      */
-    public function testGetPaginatedQuestions(): void
+    public function testGetPaginatedNotes(): void
     {
         $token = $this->loginSystemAdminUser();
-        Question::factory()->count(15)->create();
+        Note::factory()->count(15)->create();
         $response = $this->withToken($token)->get($this->resource);
 
         $response->assertOk()->assertJsonStructure(['data', 'links', 'meta']);
@@ -71,35 +72,35 @@ class QuestionFeatureTest extends TestCase
     /**
      * @test
      *
-     * A basic unit test in getting question by id.
+     * A basic unit test in getting note by id.
      *
      * @return void
      */
-    public function testGetQuestionById(): void
+    public function testGetNoteById(): void
     {
         $token = $this->loginSystemAdminUser();
-        $question = Question::factory()->create();
-        $response = $this->withToken($token)->get("{$this->resource}/{$question->id}");
+        $note = Note::factory()->create();
+        $response = $this->withToken($token)->get("{$this->resource}/{$note->id}");
 
-        $response->assertOk()->assertJson(['id' => $question->id]);
+        $response->assertOk()->assertJson(['id' => $note->id]);
     }
 
     /**
      * @test
      *
-     * A basic unit test in updating question.
+     * A basic unit test in updating note.
      *
      * @return void
      */
-    public function testUpdateQuestion(): void
+    public function testUpdateNote(): void
     {
         $token = $this->loginSystemAdminUser();
-        $question = Question::factory()->create();
+        $note = Note::factory()->create();
         $payload = $this->getPayload();
-        $response = $this->withToken($token)->put("{$this->resource}/{$question->id}", $payload);
+        $response = $this->withToken($token)->put("{$this->resource}/{$note->id}", $payload);
 
         // For assertion
-        $payload['id'] = $question->id;
+        $payload['id'] = $note->id;
 
         $response->assertOk()->assertJson($payload);
     }
@@ -107,15 +108,15 @@ class QuestionFeatureTest extends TestCase
     /**
      * @test
      *
-     * A basic unit test in deleting question.
+     * A basic unit test in deleting note.
      *
      * @return void
      */
-    public function testDeleteQuestion(): void
+    public function testDeleteNote(): void
     {
         $token = $this->loginSystemAdminUser();
-        $question = Question::factory()->create();
-        $response = $this->withToken($token)->delete("{$this->resource}/{$question->id}");
+        $note = Note::factory()->create();
+        $response = $this->withToken($token)->delete("{$this->resource}/{$note->id}");
 
         $response->assertOk()->assertJsonStructure(['success']);
     }

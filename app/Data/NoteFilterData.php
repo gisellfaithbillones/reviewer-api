@@ -2,12 +2,11 @@
 
 namespace App\Data;
 
-class QuestionFilterData extends BaseData
+class NoteFilterData extends BaseData
 {
 
     public function __construct(
         public ?int $reviewerId = null,
-        public ?string $content = null,
         ...$args
     )
     {

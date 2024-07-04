@@ -6,7 +6,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQuestionsTable extends Migration
+class CreateNotesTable extends Migration
 {
 
     /**
@@ -16,7 +16,7 @@ class CreateQuestionsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create(DatabaseTableConstant::QUESTIONS, function (Blueprint $table) {
+        Schema::create(DatabaseTableConstant::NOTES, function (Blueprint $table) {
             $table->id();
             $table->dateTime('created_at')->useCurrent();
             $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
@@ -25,10 +25,8 @@ class CreateQuestionsTable extends Migration
             $table->foreignId('updated_by')->nullable()->constrained(DatabaseTableConstant::USERS);
             $table->foreignId('deleted_by')->nullable()->constrained(DatabaseTableConstant::USERS);
             $table->foreignId('reviewer_id')->constrained(DatabaseTableConstant::REVIEWERS);
+            $table->string('title')->nullable();
             $table->text('content');
-            $table->json('attachments')->nullable();
-            $table->text('hint')->nullable();
-            $table->text('answer_explanation')->nullable();
         });
     }
 
@@ -39,7 +37,7 @@ class CreateQuestionsTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists(DatabaseTableConstant::QUESTIONS);
+        Schema::dropIfExists(DatabaseTableConstant::NOTES);
     }
 
 }

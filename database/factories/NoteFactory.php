@@ -2,14 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Models\Question;
+use App\Models\Note;
 use App\Models\Reviewer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Question>
+ * @extends Factory<Note>
  */
-class QuestionFactory extends Factory
+class NoteFactory extends Factory
 {
 
     /**
@@ -21,10 +21,8 @@ class QuestionFactory extends Factory
     {
         return [
             'reviewer_id' => Reviewer::factory()->create()->id,
-            'content' => 'What is ' . fake()->sentence() . '?',
-            'attachments' => null,
-            'hint' => null,
-            'answer_explanation' => null
+            'title' => fake()->sentence(),
+            'content' => fake()->paragraph()
         ];
     }
 

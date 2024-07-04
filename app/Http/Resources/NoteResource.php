@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class QuestionResource extends JsonResource
+class NoteResource extends JsonResource
 {
 
     /**
@@ -23,9 +23,8 @@ class QuestionResource extends JsonResource
             'updatedAt' => $this->updated_at,
             'reviewerId' => $this->reviewer_id,
             'reviewer' => new ReviewerResource($this->whenLoaded('reviewer')),
-            'content' => $this->content,
-            'choices' => ChoiceResource::collection($this->whenLoaded('choices')),
-            'answer' => new AnswerResource($this->whenLoaded('answer'))
+            'title' => $this->title,
+            'content' => $this->content
         ];
     }
 

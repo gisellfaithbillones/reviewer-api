@@ -2,15 +2,13 @@
 
 namespace App\Data;
 
-class QuestionData extends BaseData
+class NoteData extends BaseData
 {
 
     public function __construct(
         public int $reviewerId,
+        public ?string $title,
         public string $content,
-        public ?array $attachments = null,
-        public ?string $hint = null,
-        public ?string $answerExplanation = null,
         ...$args
     )
     {

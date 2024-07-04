@@ -1,12 +1,13 @@
 <?php
 
 use App\Constants\DatabaseTableConstant;
+use App\Constants\ReviewerVisibilityConstant;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateQuestionsTable extends Migration
+class CreateReviewersTable extends Migration
 {
 
     /**
@@ -16,7 +17,7 @@ class CreateQuestionsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create(DatabaseTableConstant::QUESTIONS, function (Blueprint $table) {
+        Schema::create(DatabaseTableConstant::REVIEWERS, function (Blueprint $table) {
             $table->id();
             $table->dateTime('created_at')->useCurrent();
             $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'));
@@ -24,11 +25,11 @@ class CreateQuestionsTable extends Migration
             $table->foreignId('created_by')->nullable()->constrained(DatabaseTableConstant::USERS);
             $table->foreignId('updated_by')->nullable()->constrained(DatabaseTableConstant::USERS);
             $table->foreignId('deleted_by')->nullable()->constrained(DatabaseTableConstant::USERS);
-            $table->foreignId('reviewer_id')->constrained(DatabaseTableConstant::REVIEWERS);
-            $table->text('content');
-            $table->json('attachments')->nullable();
-            $table->text('hint')->nullable();
-            $table->text('answer_explanation')->nullable();
+            $table->foreignId('user_id')->constrained(DatabaseTableConstant::USERS);
+            $table->string('name');
+            $table->string('visibility')->default(ReviewerVisibilityConstant::PRIVATE);
+            $table->text('description')->nullable();
+            $table->text('cover_image')->nullable();
         });
     }
 
@@ -39,7 +40,7 @@ class CreateQuestionsTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists(DatabaseTableConstant::QUESTIONS);
+        Schema::dropIfExists(DatabaseTableConstant::REVIEWERS);
     }
 
 }

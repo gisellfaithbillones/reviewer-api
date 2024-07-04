@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Data\QuestionData;
-use App\Data\QuestionFilterData;
+use App\Data\NoteData;
+use App\Data\NoteFilterData;
 
-class QuestionRequest extends BaseRequest
+class NoteRequest extends BaseRequest
 {
 
     /**
@@ -17,10 +17,8 @@ class QuestionRequest extends BaseRequest
     {
         return [
             'reviewerId' => 'required|integer',
-            'content' => 'required|string',
-            'attachments' => 'nullable|array',
-            'hint' => 'nullable|string',
-            'answerExplanation' => 'nullable|string'
+            'title' => 'nullable|string',
+            'content' => 'required|string'
         ];
     }
 
@@ -37,17 +35,15 @@ class QuestionRequest extends BaseRequest
     /**
      * Transform request to data object.
      *
-     * @return QuestionData
+     * @return NoteData
      */
-    public function toData(): QuestionData
+    public function toData(): NoteData
     {
-        return new QuestionData(
+        return new NoteData(
             reviewerId: $this->getInputAsInt('reviewerId'),
+            title: $this->getInputAsString('title'),
             content: $this->getInputAsString('content'),
-            attachments: $this->getInputAsArray('attachments'),
-            hint: $this->getInputAsString('hint'),
-            answerExplanation: $this->getInputAsString('answerExplanation'),
-            id: $this->route('questionId'),
+            id: $this->route('noteId'),
             authUser: $this->getAuthUserData(),
             meta: $this->getMetaData()
         );
@@ -56,12 +52,12 @@ class QuestionRequest extends BaseRequest
     /**
      * Transform request to filter data object.
      *
-     * @return QuestionFilterData
+     * @return NoteFilterData
      */
-    public function toFilterData(): QuestionFilterData
+    public function toFilterData(): NoteFilterData
     {
-        return new QuestionFilterData(
-            content: $this->getInputAsString('content'),
+        return new NoteFilterData(
+            reviewerId: $this->getInputAsInt('reviewerId'),
             id: $this->getInputAsInt('id'),
             authUser: $this->getAuthUserData(),
             meta: $this->getMetaData()

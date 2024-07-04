@@ -4,16 +4,21 @@ namespace App\Models;
 
 use App\Constants\DatabaseTableConstant;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
+ * @property int $reviewerId
  * @property string $content
+ * @property array|null $attachments
+ * @property string|null $hint
+ * @property string|null $answer_explanation
  *
  * Model relationships
  * @property Choice[]|Collection $choices
- * @property Answer|null $answer
+ * @property Answer[]|Collection $answers
+ * @property Reviewer|null $reviewer
  */
 class Question extends BaseModel
 {
@@ -39,7 +44,9 @@ class Question extends BaseModel
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'attachments' => 'json'
+    ];
 
     /**
      * The choices of this question.
@@ -52,13 +59,23 @@ class Question extends BaseModel
     }
 
     /**
-     * The answer of this question.
+     * The answers of this question.
      *
-     * @return HasOne
+     * @return HasMany
      */
-    public function answer(): HasOne
+    public function answers(): HasMany
     {
-        return $this->hasOne(Answer::class);
+        return $this->hasMany(Answer::class);
+    }
+
+    /**
+     * The reviewer where this question belongs.
+     *
+     * @return BelongsTo
+     */
+    public function reviewer(): BelongsTo
+    {
+        return $this->belongsTo(Reviewer::class);
     }
 
 }

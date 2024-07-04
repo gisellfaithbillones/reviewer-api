@@ -24,7 +24,11 @@ class QuestionRepository
     public function save(QuestionData $questionData, ?Question $question = null): ?Question
     {
         $question ??= new Question();
+        $question->reviewer_id = $questionData->reviewerId;
         $question->content = $questionData->content;
+        $question->attachments = $questionData->attachments;
+        $question->hint = $questionData->hint;
+        $question->answer_explanation = $questionData->answerExplanation;
         $question->save();
 
         return $this->findById($question->id);

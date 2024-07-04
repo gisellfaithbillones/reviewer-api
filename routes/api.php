@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\ChoiceController;
 use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\ReviewerController;
+use App\Http\Controllers\NoteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -86,5 +88,23 @@ Route::middleware('auth:api')->group(function () {
     	Route::get('/{answerId}', [AnswerController::class, 'getById'])->where('answerId', RoutePatternConstant::NUMERIC);
     	Route::put('/{answerId}', [AnswerController::class, 'update'])->where('answerId', RoutePatternConstant::NUMERIC);
     	Route::delete('/{answerId}', [AnswerController::class, 'delete'])->where('answerId', RoutePatternConstant::NUMERIC);
+	});
+
+	// CRUD routes for Reviewer
+	Route::prefix('reviewers')->group(function () {
+    	Route::post('/', [ReviewerController::class, 'create']);
+    	Route::get('/', [ReviewerController::class, 'getPaginated']);
+    	Route::get('/{reviewerId}', [ReviewerController::class, 'getById'])->where('reviewerId', RoutePatternConstant::NUMERIC);
+    	Route::put('/{reviewerId}', [ReviewerController::class, 'update'])->where('reviewerId', RoutePatternConstant::NUMERIC);
+    	Route::delete('/{reviewerId}', [ReviewerController::class, 'delete'])->where('reviewerId', RoutePatternConstant::NUMERIC);
+	});
+
+	// CRUD routes for Note
+	Route::prefix('notes')->group(function () {
+    	Route::post('/', [NoteController::class, 'create']);
+    	Route::get('/', [NoteController::class, 'getPaginated']);
+    	Route::get('/{noteId}', [NoteController::class, 'getById'])->where('noteId', RoutePatternConstant::NUMERIC);
+    	Route::put('/{noteId}', [NoteController::class, 'update'])->where('noteId', RoutePatternConstant::NUMERIC);
+    	Route::delete('/{noteId}', [NoteController::class, 'delete'])->where('noteId', RoutePatternConstant::NUMERIC);
 	});
 });

@@ -2,36 +2,40 @@
 
 namespace Tests\Feature;
 
-use App\Models\Question;
+use App\Constants\ReviewerVisibilityConstant;
 use App\Models\Reviewer;
+use App\Models\User;
 use Tests\TestCase;
 
-class QuestionFeatureTest extends TestCase
+class ReviewerFeatureTest extends TestCase
 {
 
-    private string $resource = '/api/questions';
+    private string $resource = '/api/reviewers';
 
     /**
-     * Get question payload.
+     * Get reviewer payload.
      *
      * @return array
      */
     private function getPayload(): array
     {
         return [
-            'reviewerId' => Reviewer::factory()->create()->id,
-            'content' => 'What is ' . fake()->sentence() . '?'
+            'userId' => User::factory()->create()->id,
+            'name' => fake()->text(),
+            'visibility' => fake()->randomElement(ReviewerVisibilityConstant::asList()),
+            'description' => fake()->text(),
+            'coverImage' => fake()->imageUrl()
         ];
     }
 
     /**
      * @test
      *
-     * A basic unit test in creating question.
+     * A basic unit test in creating reviewer.
      *
      * @return void
      */
-    public function testCreateQuestion(): void
+    public function testCreateReviewer(): void
     {
         $token = $this->loginSystemAdminUser();
         $payload = $this->getPayload();
@@ -43,14 +47,14 @@ class QuestionFeatureTest extends TestCase
     /**
      * @test
      *
-     * A basic unit test in getting paginated questions.
+     * A basic unit test in getting paginated reviewers.
      *
      * @return void
      */
-    public function testGetPaginatedQuestions(): void
+    public function testGetPaginatedReviewers(): void
     {
         $token = $this->loginSystemAdminUser();
-        Question::factory()->count(15)->create();
+        Reviewer::factory()->count(15)->create();
         $response = $this->withToken($token)->get($this->resource);
 
         $response->assertOk()->assertJsonStructure(['data', 'links', 'meta']);
@@ -71,35 +75,35 @@ class QuestionFeatureTest extends TestCase
     /**
      * @test
      *
-     * A basic unit test in getting question by id.
+     * A basic unit test in getting reviewer by id.
      *
      * @return void
      */
-    public function testGetQuestionById(): void
+    public function testGetReviewerById(): void
     {
         $token = $this->loginSystemAdminUser();
-        $question = Question::factory()->create();
-        $response = $this->withToken($token)->get("{$this->resource}/{$question->id}");
+        $reviewer = Reviewer::factory()->create();
+        $response = $this->withToken($token)->get("{$this->resource}/{$reviewer->id}");
 
-        $response->assertOk()->assertJson(['id' => $question->id]);
+        $response->assertOk()->assertJson(['id' => $reviewer->id]);
     }
 
     /**
      * @test
      *
-     * A basic unit test in updating question.
+     * A basic unit test in updating reviewer.
      *
      * @return void
      */
-    public function testUpdateQuestion(): void
+    public function testUpdateReviewer(): void
     {
         $token = $this->loginSystemAdminUser();
-        $question = Question::factory()->create();
+        $reviewer = Reviewer::factory()->create();
         $payload = $this->getPayload();
-        $response = $this->withToken($token)->put("{$this->resource}/{$question->id}", $payload);
+        $response = $this->withToken($token)->put("{$this->resource}/{$reviewer->id}", $payload);
 
         // For assertion
-        $payload['id'] = $question->id;
+        $payload['id'] = $reviewer->id;
 
         $response->assertOk()->assertJson($payload);
     }
@@ -107,15 +111,15 @@ class QuestionFeatureTest extends TestCase
     /**
      * @test
      *
-     * A basic unit test in deleting question.
+     * A basic unit test in deleting reviewer.
      *
      * @return void
      */
-    public function testDeleteQuestion(): void
+    public function testDeleteReviewer(): void
     {
         $token = $this->loginSystemAdminUser();
-        $question = Question::factory()->create();
-        $response = $this->withToken($token)->delete("{$this->resource}/{$question->id}");
+        $reviewer = Reviewer::factory()->create();
+        $response = $this->withToken($token)->delete("{$this->resource}/{$reviewer->id}");
 
         $response->assertOk()->assertJsonStructure(['success']);
     }
