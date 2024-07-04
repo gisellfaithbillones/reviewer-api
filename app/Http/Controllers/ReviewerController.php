@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GenericRequest;
+use App\Http\Requests\ReviewerContentRequest;
 use App\Http\Requests\ReviewerRequest;
 use App\Http\Resources\ReviewerResource;
 use App\Services\ReviewerService;
@@ -14,11 +15,6 @@ use Illuminate\Routing\Controller;
 class ReviewerController extends Controller
 {
 
-    /**
-     * ReviewerController constructor.
-     *
-     * @param ReviewerService $reviewerService
-     */
     public function __construct(
         private readonly ReviewerService $reviewerService
     )
@@ -35,6 +31,24 @@ class ReviewerController extends Controller
     public function create(ReviewerRequest $request): JsonResponse|JsonResource
     {
         $serviceResponse = $this->reviewerService->create($request->toData());
+
+        if ($serviceResponse->error) {
+            return ResponseUtil::error($serviceResponse->message);
+        }
+
+        return ResponseUtil::resource(ReviewerResource::class, $serviceResponse->data);
+    }
+
+    /**
+     * Create reviewer content.
+     *
+     * @param ReviewerContentRequest $request
+     *
+     * @return JsonResponse|JsonResource
+     */
+    public function createContent(ReviewerContentRequest $request): JsonResponse|JsonResource
+    {
+        $serviceResponse = $this->reviewerService->createContent($request->toData());
 
         if ($serviceResponse->error) {
             return ResponseUtil::error($serviceResponse->message);

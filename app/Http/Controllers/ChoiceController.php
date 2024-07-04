@@ -14,11 +14,6 @@ use Illuminate\Routing\Controller;
 class ChoiceController extends Controller
 {
 
-    /**
-     * ChoiceController constructor.
-     *
-     * @param ChoiceService $choiceService
-     */
     public function __construct(
         private readonly ChoiceService $choiceService
     )

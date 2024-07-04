@@ -11,16 +11,10 @@ use App\Utils\ServiceResponseUtil;
 class NoteService
 {
 
-    private NoteRepository $noteRepository;
-
-    /**
-     * NoteService constructor.
-     *
-     * @param NoteRepository $noteRepository
-     */
-    public function __construct(NoteRepository $noteRepository)
+    public function __construct(
+        private readonly NoteRepository $noteRepository
+    )
     {
-        $this->noteRepository = $noteRepository;
     }
 
     /**

@@ -11,16 +11,10 @@ use App\Utils\ServiceResponseUtil;
 class ChoiceService
 {
 
-    private ChoiceRepository $choiceRepository;
-
-    /**
-     * ChoiceService constructor.
-     *
-     * @param ChoiceRepository $choiceRepository
-     */
-    public function __construct(ChoiceRepository $choiceRepository)
+    public function __construct(
+        private readonly ChoiceRepository $choiceRepository
+    )
     {
-        $this->choiceRepository = $choiceRepository;
     }
 
     /**

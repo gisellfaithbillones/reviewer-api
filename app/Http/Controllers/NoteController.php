@@ -14,11 +14,6 @@ use Illuminate\Routing\Controller;
 class NoteController extends Controller
 {
 
-    /**
-     * NoteController constructor.
-     *
-     * @param NoteService $noteService
-     */
     public function __construct(
         private readonly NoteService $noteService
     )

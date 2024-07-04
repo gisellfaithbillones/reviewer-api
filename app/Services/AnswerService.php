@@ -11,16 +11,10 @@ use App\Utils\ServiceResponseUtil;
 class AnswerService
 {
 
-    private AnswerRepository $answerRepository;
-
-    /**
-     * AnswerService constructor.
-     *
-     * @param AnswerRepository $answerRepository
-     */
-    public function __construct(AnswerRepository $answerRepository)
+    public function __construct(
+        private readonly AnswerRepository $answerRepository
+    )
     {
-        $this->answerRepository = $answerRepository;
     }
 
     /**

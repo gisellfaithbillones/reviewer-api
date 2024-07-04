@@ -14,11 +14,6 @@ use Illuminate\Routing\Controller;
 class QuestionController extends Controller
 {
 
-    /**
-     * QuestionController constructor.
-     *
-     * @param QuestionService $questionService
-     */
     public function __construct(
         private readonly QuestionService $questionService
     )

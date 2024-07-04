@@ -2,25 +2,29 @@
 
 namespace App\Services;
 
+use App\Data\AnswerData;
+use App\Data\ChoiceData;
+use App\Data\ReviewerContentData;
+use App\Data\ReviewerContentItemData;
 use App\Data\ReviewerData;
 use App\Data\ReviewerFilterData;
 use App\Data\ServiceResponseData;
+use App\Repositories\AnswerRepository;
+use App\Repositories\ChoiceRepository;
+use App\Repositories\QuestionRepository;
 use App\Repositories\ReviewerRepository;
 use App\Utils\ServiceResponseUtil;
 
 class ReviewerService
 {
 
-    private ReviewerRepository $reviewerRepository;
-
-    /**
-     * ReviewerService constructor.
-     *
-     * @param ReviewerRepository $reviewerRepository
-     */
-    public function __construct(ReviewerRepository $reviewerRepository)
+    public function __construct(
+        private readonly ReviewerRepository $reviewerRepository,
+        private readonly QuestionRepository $questionRepository,
+        private readonly ChoiceRepository $choiceRepository,
+        private readonly AnswerRepository $answerRepository,
+    )
     {
-        $this->reviewerRepository = $reviewerRepository;
     }
 
     /**
@@ -39,6 +43,45 @@ class ReviewerService
         }
 
         return ServiceResponseUtil::success('Reviewer successfully added.', $reviewer);
+    }
+
+    /**
+     * Create reviewer content.
+     *
+     * @param ReviewerContentData $reviewerContentData
+     *
+     * @return ServiceResponseData
+     */
+    public function createContent(ReviewerContentData $reviewerContentData): ServiceResponseData
+    {
+        $reviewer = $this->reviewerRepository->findById($reviewerContentData->reviewerId);
+
+        if (empty($reviewer)) {
+            return ServiceResponseUtil::error('Failed to create reviewer content. Reviewer not found.');
+        }
+
+        /** @var ReviewerContentItemData $item */
+        foreach ($reviewerContentData->items as $item) {
+            $question = $this->questionRepository->save($item->question);
+
+            if (empty($question)) {
+                continue;
+            }
+
+            /** @var ChoiceData $choiceData */
+            foreach ($item->choices as $choiceData) {
+                $choiceData->questionId = $question->id;
+                $this->choiceRepository->save($choiceData);
+            }
+
+            /** @var AnswerData $answerData */
+            foreach ($item->answers as $answerData) {
+                $answerData->questionId = $question->id;
+                $this->answerRepository->save($answerData);
+            }
+        }
+
+        return ServiceResponseUtil::success('Reviewer content successfully updated.', $reviewer);
     }
 
     /**
