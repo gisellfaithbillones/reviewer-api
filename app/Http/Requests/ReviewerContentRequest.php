@@ -27,7 +27,6 @@ class ReviewerContentRequest extends BaseRequest
             'items.*.question.hint' => 'nullable|string',
             'items.*.question.answerExplanation' => 'nullable|string',
             'items.*.choices' => 'required|array',
-            'items.*.choices.*.questionId' => 'required|integer',
             'items.*.choices.*.content' => 'required|string',
             'items.*.answers' => 'required|array',
             'items.*.answer.*.content' => 'required|string'
