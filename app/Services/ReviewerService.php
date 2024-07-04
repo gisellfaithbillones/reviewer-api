@@ -14,6 +14,7 @@ use App\Repositories\ChoiceRepository;
 use App\Repositories\QuestionRepository;
 use App\Repositories\ReviewerRepository;
 use App\Utils\ServiceResponseUtil;
+use Illuminate\Support\Facades\DB;
 
 class ReviewerService
 {
@@ -60,28 +61,30 @@ class ReviewerService
             return ServiceResponseUtil::error('Failed to create reviewer content. Reviewer not found.');
         }
 
-        /** @var ReviewerContentItemData $item */
-        foreach ($reviewerContentData->items as $item) {
-            $question = $this->questionRepository->save($item->question);
+        return DB::transaction(function () use ($reviewerContentData, $reviewer) {
+            /** @var ReviewerContentItemData $item */
+            foreach ($reviewerContentData->items as $item) {
+                $question = $this->questionRepository->save($item->question);
 
-            if (empty($question)) {
-                continue;
+                if (empty($question)) {
+                    continue;
+                }
+
+                /** @var ChoiceData $choiceData */
+                foreach ($item->choices as $choiceData) {
+                    $choiceData->questionId = $question->id;
+                    $this->choiceRepository->save($choiceData);
+                }
+
+                /** @var AnswerData $answerData */
+                foreach ($item->answers as $answerData) {
+                    $answerData->questionId = $question->id;
+                    $this->answerRepository->save($answerData);
+                }
             }
 
-            /** @var ChoiceData $choiceData */
-            foreach ($item->choices as $choiceData) {
-                $choiceData->questionId = $question->id;
-                $this->choiceRepository->save($choiceData);
-            }
-
-            /** @var AnswerData $answerData */
-            foreach ($item->answers as $answerData) {
-                $answerData->questionId = $question->id;
-                $this->answerRepository->save($answerData);
-            }
-        }
-
-        return ServiceResponseUtil::success('Reviewer content successfully updated.', $reviewer);
+            return ServiceResponseUtil::success('Reviewer content successfully updated.', $reviewer);
+        });
     }
 
     /**
